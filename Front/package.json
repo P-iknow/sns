@@ -1,0 +1,24 @@
+{
+  "name": "nodebird",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "P-iknow",
+  "license": "ISC",
+  "dependencies": {
+    "next": "^8.1.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "eslint": "^6.3.0",
+    "nodemon": "^1.19.2",
+    "webpack": "^4.39.3"
+  }
+}

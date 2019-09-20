@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "P-iknow",
   "license": "ISC",
   "dependencies": {
+    "antd": "^3.23.3",
     "next": "^8.1.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"

@@ -11,5 +11,8 @@
     "node": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "plugins": ["import", "react-hooks"]
+  "plugins": ["import", "react-hooks"],
+  "rules": {
+    "react/prop-types": 0
+  }
 }

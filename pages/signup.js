@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
 import { Form, Input, Checkbox, Button } from 'antd';
+import { useInput } from '../hooks';
 
 const Signup = () => {
-  const [id, setId] = useState('');
-  const [nick, setNick] = useState('');
-  const [password, setPassword] = useState('');
+  const [id, onChangeID] = useInput('');
+  const [nick, onChangeNick] = useInput('');
+  const [password, onChangePassword] = useInput('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [term, setTerm] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -29,15 +30,7 @@ const Signup = () => {
       term,
     });
   };
-  const onChangeID = ({ target: { value } }) => {
-    setId(value);
-  };
-  const onChangeNick = ({ target: { value } }) => {
-    setNick(value);
-  };
-  const onChangePassword = ({ target: { value } }) => {
-    setPassword(value);
-  };
+
   const onChangePasswordCheck = ({ target: { value } }) => {
     setPasswordError(value !== password);
     setPasswordCheck(value);

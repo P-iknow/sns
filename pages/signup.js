@@ -9,8 +9,26 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [term, setTerm] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [termError, setTermError] = useState(false);
 
-  const onSubmit = () => {};
+  const onSubmit = e => {
+    e.preventDefault();
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+
+    if (!term) {
+      return setTermError(true);
+    }
+    console.table({
+      id,
+      nick,
+      password,
+      passwordCheck,
+      term,
+    });
+  };
   const onChangeID = ({ target: { value } }) => {
     setId(value);
   };
@@ -21,9 +39,11 @@ const Signup = () => {
     setPassword(value);
   };
   const onChangePasswordCheck = ({ target: { value } }) => {
+    setPasswordError(value !== password);
     setPasswordCheck(value);
   };
   const onChangeTerm = ({ target: { value } }) => {
+    setTermError(false);
     setTerm(!value);
   };
 
@@ -74,11 +94,17 @@ const Signup = () => {
               value={passwordCheck}
               onChange={onChangePasswordCheck}
             />
+            {passwordError && (
+              <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>
+            )}
           </div>
           <div>
             <Checkbox name="user-term" value={term} onChange={onChangeTerm}>
               해당 사이트의 약관에 동의합니다.
             </Checkbox>
+            {termError && (
+              <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>
+            )}
           </div>
           <div>
             <Button type="primary" htmlType="submit">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
 import { Form, Input, Checkbox, Button } from 'antd';
@@ -13,32 +13,31 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
 
-  const onSubmit = e => {
-    e.preventDefault();
-    if (password !== passwordCheck) {
-      return setPasswordError(true);
-    }
+  const onSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      if (password !== passwordCheck) {
+        return setPasswordError(true);
+      }
 
-    if (!term) {
-      return setTermError(true);
-    }
-    console.table({
-      id,
-      nick,
-      password,
-      passwordCheck,
-      term,
-    });
-  };
+      if (!term) {
+        return setTermError(true);
+      }
+    },
+    [password, passwordCheck, term]
+  );
 
-  const onChangePasswordCheck = ({ target: { value } }) => {
-    setPasswordError(value !== password);
-    setPasswordCheck(value);
-  };
-  const onChangeTerm = ({ target: { value } }) => {
+  const onChangePasswordCheck = useCallback(
+    ({ target: { value } }) => {
+      setPasswordError(value !== password);
+      setPasswordCheck(value);
+    },
+    [password]
+  );
+  const onChangeTerm = useCallback(({ target: { value } }) => {
     setTermError(false);
     setTerm(!value);
-  };
+  }, []);
 
   return (
     <>
@@ -92,7 +91,7 @@ const Signup = () => {
             )}
           </div>
           <div>
-            <Checkbox name="user-term" value={term} onChange={onChangeTerm}>
+            <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
               해당 사이트의 약관에 동의합니다.
             </Checkbox>
             {termError && (

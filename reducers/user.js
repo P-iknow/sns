@@ -17,7 +17,7 @@ const logoutAction = {
   type: LOGOUT,
 };
 
-const reducer = (state, initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN: {
       return {

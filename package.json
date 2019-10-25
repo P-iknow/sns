@@ -14,10 +14,12 @@
   "dependencies": {
     "antd": "^3.23.3",
     "next": "^8.1.0",
+    "next-redux-wrapper": "^4.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
-    "redux": "^4.0.4"
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8"
   },
   "devDependencies": {
     "eslint-plugin-import": "^2.18.2",

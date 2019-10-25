@@ -15,7 +15,9 @@
     "antd": "^3.23.3",
     "next": "^8.1.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4"
   },
   "devDependencies": {
     "eslint-plugin-import": "^2.18.2",

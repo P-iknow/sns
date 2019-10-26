@@ -6,14 +6,6 @@ import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
 
-const dummy = {
-  nickname: 'p-iknow',
-  Post: [],
-  Followings: [],
-  Followers: [],
-  isLoggedIn: false,
-};
-
 function AppLayout({ children }) {
   const { isLoggedIn } = useSelector(state => state.user);
   return (

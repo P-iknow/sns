@@ -3,7 +3,6 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import AppLayout from '../components/AppLayout';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from '../reducers';

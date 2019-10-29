@@ -27,30 +27,29 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
-const LOGIN = 'LOGIN';
-const LOGOUT = 'LOGOUT';
-const SIGNUP = 'SIGNUP';
+export const FOLLOW_USER_REQUEST = 'FOLLOW_USER_REQUEST';
+export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
+export const FOLLOW_USER_FAILURE = 'FOLLOW_USER_FAILURE';
 
-export const loginAction = {
-  type: LOGIN,
-  data: {
-    nickname: 'piknow',
-  },
-};
+export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
+export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
+export const UNFOLLOW_USER_FAILURE = 'UNFOLLOW_USER_FAILURE';
 
-export const logoutAction = {
-  type: LOGOUT,
-};
+export const LOAD_FOLLOW_REQUEST = 'LOAD_FOLLOW_REQUEST';
+export const LOAD_FOLLOW_SUCCESS = 'LOAD_FOLLOW_SUCCESS';
+export const LOAD_FOLLOW_FAILURE = 'LOAD_FOLLOW_FAILURE';
 
-export const signUpAction = data => {
-  return {
-    type: SIGNUP,
-    data,
-  };
-};
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
+
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -81,13 +80,7 @@ export default (state = initialState, action) => {
     case LOGOUT_REQUEST: {
       return {
         ...state,
-        isLoggingOut: true,
-      };
-    }
-    case LOGOUT_SUCCESS: {
-      return {
-        ...state,
-        isLoggingOut: false,
+        isLoggedIn: false,
         me: null,
       };
     }

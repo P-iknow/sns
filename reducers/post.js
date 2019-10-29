@@ -12,7 +12,16 @@ const initialState = {
   ], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: '', // 포스트 업로드 실패 사유
-  isAddingPost: false, // 포스트 업로드 중
+  isPostAdding: false, // 포스트 업로드 중
+  isPostAdded: false, // 포스트 업로드 성공
+};
+
+const dummyPost = {
+  User: {
+    id: 1,
+    nickname: 'Q',
+  },
+  content: '이것은 더미 콘텐츠 입니다.',
 };
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
@@ -67,6 +76,24 @@ export default (state = initialState, action) => {
     case ADD_POST_REQUEST: {
       return {
         ...state,
+        isPostAdding: true,
+        addPostErrorReason: '',
+        isPostAdded: false,
+      };
+    }
+    case ADD_POST_SUCCESS: {
+      return {
+        ...state,
+        isPostAdding: false,
+        mainPosts: [dummyPost, ...state.mainPosts],
+        isPostAdded: true,
+      };
+    }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        isPostAdding: false,
+        addPostErrorReason: action.error,
       };
     }
     default: {

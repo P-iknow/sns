@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Checkbox, Button } from 'antd';
+import Router from 'next/router';
 import { useInput } from '../hooks';
-import { signUpAction } from '../reducers/user';
+import { SIGNUP_REQUEST } from '../reducers/user';
 
 const Signup = () => {
   const [id, onChangeID] = useInput('');
@@ -13,6 +14,16 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
   const dispatch = useDispatch();
+  const { isSigningUp, me } = useSelector(state => state.user);
+
+  useEffect(() => {
+    if (me) {
+      alert('로그인했으니 메인페이지로 이동합니다.');
+      Router.push('/');
+    }
+  }, [me && me.id]);
+  // 자바스크립트 객체는 undefined가 될 수 있으닌 가드를 해주자
+  // me 가 아닌 me.id를 dependency에 추가하는 이유는 객체는 비교가 어렵기 때문이다.(shallow copy로 인해)
 
   const onSubmit = useCallback(
     e => {
@@ -24,15 +35,12 @@ const Signup = () => {
       if (!term) {
         return setTermError(true);
       }
-      dispatch(
-        signUpAction({
-          id,
-          password,
-          nick,
-        })
-      );
+      dispatch({
+        type: SIGNUP_REQUEST,
+        data: { id, password, nick },
+      });
     },
-    [password, passwordCheck, term]
+    [password, passwordCheck, term, nick]
   );
 
   const onChangePasswordCheck = useCallback(
@@ -99,7 +107,7 @@ const Signup = () => {
           )}
         </div>
         <div>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isSigningUp}>
             가입하기
           </Button>
         </div>

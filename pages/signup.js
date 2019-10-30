@@ -22,6 +22,8 @@ const Signup = () => {
       Router.push('/');
     }
   }, [me && me.id]);
+  // 자바스크립트 객체는 undefined가 될 수 있으닌 가드를 해주자
+  // me 가 아닌 me.id를 dependency에 추가하는 이유는 객체는 비교가 어렵기 때문이다.(shallow copy로 인해)
 
   const onSubmit = useCallback(
     e => {

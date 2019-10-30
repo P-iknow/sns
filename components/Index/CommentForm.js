@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Button, List, Comment, Avatar } from 'antd';
 import { ADD_COMMENT_REQUEST } from '../../reducers/post';
@@ -6,6 +6,7 @@ import { ADD_COMMENT_REQUEST } from '../../reducers/post';
 const CommentForm = ({ post }) => {
   const { me } = useSelector(state => state.user);
   const [commentText, setCommentText] = useState('');
+  const { isCommentAdded, isCommentAdding } = useSelector(state => state.post);
   const dispatch = useDispatch();
 
   const onSubmitComment = useCallback(
@@ -27,6 +28,11 @@ const CommentForm = ({ post }) => {
   const onChangeCommentText = useCallback(e => {
     setCommentText(e.target.value);
   }, []);
+
+  useEffect(() => {
+    setCommentText('');
+  }, [isCommentAdded === true]);
+
   return (
     <>
       <Form onSubmit={onSubmitComment}>
@@ -37,21 +43,21 @@ const CommentForm = ({ post }) => {
             onChange={onChangeCommentText}
           />
         </Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isCommentAdding}>
           등록
         </Button>
       </Form>
       <List
         header={`${post.Comments ? post.Comments.length : 0} 댓글`}
         itemLayout="horizontal"
-        dataSource={post.Comment || []}
+        dataSource={post.Comments || []}
         renderItem={item => (
           <li>
             <Comment
               author={item.User.nickname}
               avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
               content={item.content}
-              datetime={item.createdAt}
+              // datetime={item.createdAt}
             />
           </li>
         )}

@@ -6,6 +6,7 @@ const expressSession = require('express-session');
 const dotenv = require('dotenv');
 const passport = require('passport');
 
+const passportConfig = require('./passport');
 const db = require('./models');
 const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
@@ -14,6 +15,7 @@ const postsAPIRouter = require('./routes/posts');
 dotenv.config();
 const app = express();
 db.sequelize.sync();
+passportConfig();
 
 // 미들웨어 추가
 app.use(morgan('dev'));

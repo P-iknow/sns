@@ -1,10 +1,11 @@
 {
-  "name": "react-nodebird-server",
+  "name": "sns-back-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "debug": "nodemon --inspect"
   },
   "author": "P-iknow",
   "license": "MIT",
@@ -24,7 +25,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^5.21.2",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "session-file-store": "^1.3.1"
   },
   "devDependencies": {
     "eslint": "^6.6.0",

@@ -7,6 +7,6 @@
     "models",
     "nodemon.json"
   ],
-  "exec": "node index.js",
+  "exec": "node --inspect index.js",
   "ext": "js json"
 }

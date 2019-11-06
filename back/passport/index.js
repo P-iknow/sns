@@ -9,7 +9,7 @@ module.exports = () => {
   // cookie 를 프론트로 보내서 저장
   // 추후 쿠키가 서버로 오면 cookie를 기준으로 해당 id를 찾아냄
   // db에서 3번은 어떤 유저구나로 판단
-  console.log('passporㅅ serializeUser 실행 ');
+  console.log('passport serializeUser 실행 ');
   passport.serializeUser((user, done) => {
     console.log('passpor serializeUser callback 실행 ');
     return done(null, user.id);

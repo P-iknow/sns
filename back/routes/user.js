@@ -36,23 +36,29 @@ router.post('/', async (req, res, next) => {
 
 router.post('/logout', (req, res) => {});
 
-router.get('/login', (req, res, next) => {
+router.post('/login', (req, res, next) => {
+  console.log('라우터 시작 ');
   // POST /api/user/login
+  console.log('passport.authenticate 실행 ');
   passport.authenticate('local', (err, user, info) => {
+    console.log('passport.authenticalte callback 실행 ');
     if (err) {
       console.error(err);
-      next(err);
+      return next(err);
     }
     if (info) {
       return res.status(401).send(info.reason);
     }
+    console.log('req.login 실행 ');
     return req.login(user, loginErr => {
+      console.log('req.login callback 실행');
       if (loginErr) {
         return next(loginErr);
       }
-      const fillteredUser = Object.assign({}.user);
+      const fillteredUser = { ...user.toJSON() };
+      console.log(fillteredUser);
       delete fillteredUser.password;
-      return res.json(fillteredUser);
+      return res.json(user);
     });
   })(req, res, next);
 });

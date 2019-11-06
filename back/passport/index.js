@@ -9,13 +9,16 @@ module.exports = () => {
   // cookie 를 프론트로 보내서 저장
   // 추후 쿠키가 서버로 오면 cookie를 기준으로 해당 id를 찾아냄
   // db에서 3번은 어떤 유저구나로 판단
-
+  console.log('passporㅅ serializeUser 실행 ');
   passport.serializeUser((user, done) => {
+    console.log('passpor serializeUser callback 실행 ');
     return done(null, user.id);
   });
 
   // 위에서 받은 id를 토대로 user 정보를 db로 불러옴
+  console.log('passport deserializeUser 실행 ');
   passport.deserializeUser(async (id, done) => {
+    console.log('passport serializeUser callback 실행 ');
     try {
       const user = await db.User.findOne({
         where: { id }

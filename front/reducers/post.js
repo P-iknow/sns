@@ -102,7 +102,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isPostAdding: false,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [action.data, ...state.mainPosts],
         isPostAdded: true,
       };
     }

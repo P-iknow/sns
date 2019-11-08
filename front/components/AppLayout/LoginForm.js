@@ -8,7 +8,7 @@ import { LOGIN_REQUEST } from '../../reducers/user';
 const LoginForm = () => {
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { isLoggingIn } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const onSubmitForm = useCallback(
     e => {
@@ -42,7 +42,7 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+        <Button type="primary" htmlType="submit" loading={me}>
           로그인
         </Button>
         <Link href="/signup">

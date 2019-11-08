@@ -14,15 +14,18 @@ const PostForm = () => {
     setText('');
   }, [isPostAdded]);
 
-  const onSubmitForm = useCallback(e => {
-    e.preventDefault();
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: {
-        text,
-      },
-    });
-  });
+  const onSubmitForm = useCallback(
+    e => {
+      e.preventDefault();
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: {
+          content: text,
+        },
+      });
+    },
+    [text]
+  );
   const onChangeText = useCallback(e => {
     setText(e.target.value);
   });

@@ -1,10 +1,3 @@
-const dummyUser = {
-  nickname: 'piknow',
-  Post: [],
-  Followings: [],
-  Followers: [],
-};
-
 const initialState = {
   isLoggedIn: false, // 로그인 여부
   isLoggingOut: false, // 로그아웃 시도중
@@ -65,7 +58,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
-        me: dummyUser,
+        me: action.data,
       };
     }
     case LOGIN_FAILURE: {

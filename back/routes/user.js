@@ -25,7 +25,6 @@ router.post('/', async (req, res, next) => {
       userId: req.body.userId,
       password: hashedPassword
     });
-    console.log(newUser);
     return res.status(200).json(newUser);
   } catch (e) {
     console.error(e);
@@ -34,14 +33,15 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/logout', (req, res) => {});
+router.post('/logout', (req, res) => {
+  req.logout();
+  req.session.destory();
+  res.send('로그아웃 성공');
+});
 
 router.post('/login', (req, res, next) => {
-  console.log('라우터 시작 ');
   // POST /api/user/login
-  console.log('passport.authenticate 실행 ');
   passport.authenticate('local', (err, user, info) => {
-    console.log('passport.authenticalte callback 실행 ');
     if (err) {
       console.error(err);
       return next(err);
@@ -49,16 +49,36 @@ router.post('/login', (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    console.log('req.login 실행 ');
-    return req.login(user, loginErr => {
-      console.log('req.login callback 실행');
-      if (loginErr) {
-        return next(loginErr);
+    return req.login(user, async loginErr => {
+      try {
+        if (loginErr) {
+          return next(loginErr);
+        }
+        const fullUser = await db.User.findOne({
+          where: { id: user.id },
+          include: [
+            {
+              model: db.Post,
+              as: 'Posts',
+              attributes: ['id']
+            },
+            {
+              model: db.User,
+              as: 'Followings',
+              attributes: ['id']
+            },
+            {
+              model: db.User,
+              as: 'Followers',
+              attributes: ['id']
+            }
+          ],
+          attributes: ['id', 'nickname', 'userId']
+        });
+        return res.json(fullUser);
+      } catch (e) {
+        next(e);
       }
-      const fillteredUser = { ...user.toJSON() };
-      console.log(fillteredUser);
-      delete fillteredUser.password;
-      return res.json(user);
     });
   })(req, res, next);
 });

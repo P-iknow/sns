@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Followings',
       foreignKey: 'followerId'
     });
+
+    // Followings 가 followerId 를 가르키는 이유
+    // 반대로 쓰는 foreignKey 가 남의 테이블 id를 가리키기 때문
   };
 
   return User;

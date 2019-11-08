@@ -5,8 +5,14 @@ const db = require('../models');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {});
-router.get('/:id', (req, res) => {});
+router.get('/', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send('로그인이 필요합니다');
+  }
+  return res.json(req.user);
+});
+
+// router.get('/:id', (req, res) => {});
 
 router.post('/', async (req, res, next) => {
   try {
@@ -35,7 +41,7 @@ router.post('/', async (req, res, next) => {
 
 router.post('/logout', (req, res) => {
   req.logout();
-  req.session.destory();
+  req.session.destroy();
   res.send('로그아웃 성공');
 });
 
@@ -77,7 +83,7 @@ router.post('/login', (req, res, next) => {
         });
         return res.json(fullUser);
       } catch (e) {
-        next(e);
+        return next(e);
       }
     });
   })(req, res, next);

@@ -14,15 +14,22 @@ const PostForm = () => {
     setText('');
   }, [isPostAdded]);
 
-  const onSubmitForm = useCallback(e => {
-    e.preventDefault();
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: {
-        text,
-      },
-    });
-  });
+  const onSubmitForm = useCallback(
+    e => {
+      e.preventDefault();
+      // 비어있는 포스트를 등록하려고 할 때
+      if (!text || text.trim()) {
+        return '게시글은 콘텐츠가 비어있습니다.';
+      }
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: {
+          content: text,
+        },
+      });
+    },
+    [text]
+  );
   const onChangeText = useCallback(e => {
     setText(e.target.value);
   });

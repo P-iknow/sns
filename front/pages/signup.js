@@ -7,7 +7,7 @@ import { SIGNUP_REQUEST } from '../reducers/user';
 
 const Signup = () => {
   const [id, onChangeID] = useInput('');
-  const [nick, onChangeNick] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [term, setTerm] = useState(false);
@@ -37,10 +37,10 @@ const Signup = () => {
       }
       dispatch({
         type: SIGNUP_REQUEST,
-        data: { id, password, nick },
+        data: { userId: id, password, nickname },
       });
     },
-    [password, passwordCheck, term, nick]
+    [id, password, passwordCheck, term, nickname]
   );
 
   const onChangePasswordCheck = useCallback(
@@ -64,13 +64,13 @@ const Signup = () => {
           <Input name="user-id" required value={id} onChange={onChangeID} />
         </div>
         <div>
-          <label htmlFor="user-nick">닉네임</label>
+          <label htmlFor="user-nickname">닉네임</label>
           <br />
           <Input
-            name="user-nick"
+            name="user-nickname"
             required
-            value={nick}
-            onChange={onChangeNick}
+            value={nickname}
+            onChange={onChangeNickname}
           />
         </div>
         <div>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { Card, Icon, Button, Avatar } from 'antd';
 import PropTypes from 'prop-types';
@@ -10,10 +11,20 @@ const PostCard = ({ post }) => {
     setCommentFormOpened(prev => !prev);
   }, []);
 
+  const postContent = post.content.split(/(#[^\s]+)/g).map(v => {
+    if (v.match(/#[^\s]+/)) {
+      return (
+        <Link href="/hashtag" key={v}>
+          <a>{v}</a>
+        </Link>
+      );
+    }
+    return v;
+  });
   return (
     <div>
       <Card
-        key={post.createdAt}
+        key={+post.createdAt}
         cover={post.img && <img alt="example" src={post.img} />}
         actions={[
           <Icon type="retweet" key="retweet" />,
@@ -25,7 +36,7 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={post.content}
+          description={<>{postContent}</>}
         />
       </Card>
       {commentFormOpened && <CommentForm post={post} />}
@@ -38,7 +49,7 @@ PostCard.propTypes = {
     User: PropTypes.object,
     content: PropTypes.string,
     img: PropTypes.string,
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
   }),
 };
 

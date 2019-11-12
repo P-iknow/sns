@@ -1,16 +1,16 @@
-const express = require('express');
-const db = require('../models');
+const express = require("express");
+const db = require("../models");
 
 const router = express.Router();
 
-router.post('/', async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   // POST /api/post
   try {
     const newPost = await db.Post.create({
       content: req.body.content,
       UserId: req.user.id
     });
-    const hashtags = req.body.content.match(/#[^\s]/g);
+    const hashtags = req.body.content.match(/#[^\s]+/g);
     if (hashtags) {
       const result = await Promise.all(
         hashtags.map(tag => {
@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
       include: [
         {
           model: db.User,
-          attributes: ['id', 'nickname', 'userId']
+          attributes: ["id", "nickname", "userId"]
         }
       ]
     });
@@ -45,6 +45,6 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/imeage', (req, res) => {});
+router.post("/imeage", (req, res) => {});
 
 module.exports = router;

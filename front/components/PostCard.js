@@ -39,7 +39,16 @@ const PostCard = ({ post }) => {
         extra={<Button>팔로우</Button>}
       >
         <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+          avatar={
+            <Link
+              href={{ pathname: "/user", query: { id: post.User.id } }}
+              as={`/user/${post.User.id}`}
+            >
+              <a>
+                <Avatar>{post.User.nickname[0]}</Avatar>
+              </a>
+            </Link>
+          }
           title={post.User.nickname}
           description={<>{postContent}</>}
         />

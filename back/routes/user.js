@@ -1,20 +1,20 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const passport = require('passport');
-const db = require('../models');
+const express = require("express");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
+const db = require("../models");
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   if (!req.user) {
-    return res.status(401).send('로그인이 필요합니다');
+    return res.status(401).send("로그인이 필요합니다");
   }
   return res.json(req.user);
 });
 
 // router.get('/:id', (req, res) => {});
 
-router.post('/', async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const exUser = await db.User.findOne({
       where: {
@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
       }
     });
     if (exUser) {
-      return res.status(403).send('이미 사용중인 아이디입니다.');
+      return res.status(403).send("이미 사용중인 아이디입니다.");
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 12); // salt 는 10~13 사이로 유지
 
@@ -39,15 +39,50 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.send('로그아웃 성공');
+router.get("/:id", async (req, res, next) => {
+  // 남의 정보 가져오는 것 ex) /api/user/123
+  try {
+    const user = await db.User.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+      include: [
+        {
+          model: db.Post,
+          as: "Posts",
+          attributes: ["id"]
+        },
+        {
+          model: db.User,
+          as: "Followings",
+          attributes: ["id"]
+        },
+        {
+          model: db.User,
+          as: "Followers",
+          attributes: ["id"]
+        }
+      ],
+      attributes: ["id", "nickname"]
+    });
+    const jsonUser = user.toJSON();
+    jsonUser.Posts = jsonUser.Posts ? jsonUser.Posts.length : 0;
+    jsonUser.Followings = jsonUser.Followings ? jsonUser.Followings.length : 0;
+    jsonUser.Followers = jsonUser.Followers ? jsonUser.Followers.length : 0;
+    res.json(jsonUser);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
 });
 
-router.post('/login', (req, res, next) => {
+router.post("/logout", (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send("로그아웃 성공");
+});
+
+router.post("/login", (req, res, next) => {
   // POST /api/user/login
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error(err);
       return next(err);
@@ -65,21 +100,21 @@ router.post('/login', (req, res, next) => {
           include: [
             {
               model: db.Post,
-              as: 'Posts',
-              attributes: ['id']
+              as: "Posts",
+              attributes: ["id"]
             },
             {
               model: db.User,
-              as: 'Followings',
-              attributes: ['id']
+              as: "Followings",
+              attributes: ["id"]
             },
             {
               model: db.User,
-              as: 'Followers',
-              attributes: ['id']
+              as: "Followers",
+              attributes: ["id"]
             }
           ],
-          attributes: ['id', 'nickname', 'userId']
+          attributes: ["id", "nickname"]
         });
         return res.json(fullUser);
       } catch (e) {
@@ -88,14 +123,34 @@ router.post('/login', (req, res, next) => {
     });
   })(req, res, next);
 });
-router.get('api/user/:id/follow', (req, res) => {});
+router.get("api/user/:id/follow", (req, res) => {});
 
-router.post('/:id/follow', (req, res) => {});
+router.post("/:id/follow", (req, res) => {});
 
-router.post('/:id/follow', (req, res) => {});
+router.post("/:id/follow", (req, res) => {});
 
-router.post('/:id/follower', (req, res) => {});
+router.post("/:id/follower", (req, res) => {});
 
-router.get('/:id/posts', (req, res) => {});
+router.get("/:id/posts", async (req, res, next) => {
+  try {
+    const posts = await db.Post.findAll({
+      where: {
+        UserId: parseInt(req.params.id, 10),
+        // Retweet 한 게시물은 뺀다
+        RetweetId: null
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"]
+        }
+      ]
+    });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 
 module.exports = router;

@@ -10,26 +10,40 @@ import AppLayout from '../components/AppLayout';
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
 
-const NodeBird = ({ Component, store }) => {
+const Sns = ({ Component, store, pageProps }) => {
   return (
     <Provider store={store}>
       <Head>
-        <title>NodeBird</title>
+        <title>SNS</title>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
         />
       </Head>
       <AppLayout>
-        <Component />
+        <Component {...pageProps} />
       </AppLayout>
     </Provider>
   );
 };
 
-NodeBird.propTypes = {
+Sns.propTypes = {
   Component: PropTypes.elementType,
   store: PropTypes.object,
+  pageProps: PropTypes.object.isRequired,
+};
+
+// 아래 context props 는 next.js 에서 내려주는 것
+Sns.getInitialProps = async context => {
+  console.log(context);
+  const { ctx, Component } = context;
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    // 각 페이지 컴포넌트의 getInitialProps 메소드 내부에서 return 된 {tag: ...} 객체가
+    // pageProps에 담기게 됨
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  return { pageProps };
 };
 
 export default withRedux((initialState, options) => {
@@ -48,4 +62,4 @@ export default withRedux((initialState, options) => {
   const store = createStore(rootReducer, initialState, enhancer);
   sagaMiddleware.run(rootSaga);
   return store;
-})(NodeBird);
+})(Sns);

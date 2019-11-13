@@ -1,17 +1,18 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
-const FileStore = require('session-file-store')(expressSession);
-const dotenv = require('dotenv');
-const passport = require('passport');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const expressSession = require("express-session");
+const FileStore = require("session-file-store")(expressSession);
+const dotenv = require("dotenv");
+const passport = require("passport");
 
-const passportConfig = require('./passport');
-const db = require('./models');
-const userAPIRouter = require('./routes/user');
-const postAPIRouter = require('./routes/post');
-const postsAPIRouter = require('./routes/posts');
+const passportConfig = require("./passport");
+const db = require("./models");
+const userAPIRouter = require("./routes/user");
+const postAPIRouter = require("./routes/post");
+const postsAPIRouter = require("./routes/posts");
+const hashtagAPIRouter = require("./routes/hashtag");
 
 const PORT = process.env.PORT || 3065;
 
@@ -21,7 +22,7 @@ db.sequelize.sync();
 passportConfig();
 
 // 미들웨어 추가
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: true,
@@ -48,9 +49,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/user', userAPIRouter);
-app.use('/api/post', postAPIRouter);
-app.use('/api/posts', postsAPIRouter);
+app.use("/api/user", userAPIRouter);
+app.use("/api/post", postAPIRouter);
+app.use("/api/posts", postsAPIRouter);
+app.use("/api/hashtag", hashtagAPIRouter);
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`);

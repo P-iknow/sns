@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { Card, Icon, Button, Avatar } from 'antd';
-import PropTypes from 'prop-types';
-import CommentForm from './CommentForm';
+import Link from "next/link";
+import React, { useCallback, useState } from "react";
+import { Card, Icon, Button, Avatar } from "antd";
+import PropTypes from "prop-types";
+import CommentForm from "./CommentForm";
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -10,22 +11,37 @@ const PostCard = ({ post }) => {
     setCommentFormOpened(prev => !prev);
   }, []);
 
+  const postContent = post.content.split(/(#[^\s]+)/g).map(v => {
+    if (v.match(/#[^\s]+/)) {
+      return (
+        <Link
+          href={{ pathname: "/hashtag", query: { tag: v.slice(1) } }}
+          as={`/hashtag/${v.slice(1)}`}
+          key={v}
+        >
+          <a>{v}</a>
+        </Link>
+      );
+    }
+    return v;
+  });
   return (
     <div>
       <Card
-        key={post.createdAt}
+        key={+post.createdAt}
         cover={post.img && <img alt="example" src={post.img} />}
         actions={[
           <Icon type="retweet" key="retweet" />,
           <Icon type="heart" key="heart" />,
           <Icon type="message" key="message" onClick={onToggleComment} />,
-          <Icon type="ellipsis" key="ellipsis" />,
+          <Icon type="ellipsis" key="ellipsis" />
         ]}
-        extra={<Button>팔로우</Button>}>
+        extra={<Button>팔로우</Button>}
+      >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={post.content}
+          description={<>{postContent}</>}
         />
       </Card>
       {commentFormOpened && <CommentForm post={post} />}
@@ -38,8 +54,8 @@ PostCard.propTypes = {
     User: PropTypes.object,
     content: PropTypes.string,
     img: PropTypes.string,
-    createdAt: PropTypes.object,
-  }),
+    createdAt: PropTypes.string
+  })
 };
 
 export default PostCard;

@@ -1,17 +1,17 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
-import { ADD_POST_REQUEST } from '../../reducers/post';
+import React, { useCallback, useState, useEffect } from "react";
+import { Form, Input, Button } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { ADD_POST_REQUEST } from "../reducers/post";
 
 const PostForm = () => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
   const { imagePaths, isPostAdding, isPostAdded } = useSelector(
     state => state.post
   );
 
   useEffect(() => {
-    setText('');
+    setText("");
   }, [isPostAdded]);
 
   const onSubmitForm = useCallback(
@@ -19,13 +19,13 @@ const PostForm = () => {
       e.preventDefault();
       // 비어있는 포스트를 등록하려고 할 때
       if (!text || !text.trim()) {
-        return '게시글은 콘텐츠가 비어있습니다.';
+        return "게시글은 콘텐츠가 비어있습니다.";
       }
       dispatch({
         type: ADD_POST_REQUEST,
         data: {
-          content: text,
-        },
+          content: text
+        }
       });
     },
     [text]
@@ -35,9 +35,10 @@ const PostForm = () => {
   });
   return (
     <Form
-      style={{ margin: '10px 0 20px' }}
+      style={{ margin: "10px 0 20px" }}
       encType="multipart/form-data"
-      onSubmit={onSubmitForm}>
+      onSubmit={onSubmitForm}
+    >
       <Input.TextArea
         maxLength={140}
         placeholder="당신에게 어떤 일이 있었나요?"
@@ -49,19 +50,20 @@ const PostForm = () => {
         <Button>이미지 업로드</Button>
         <Button
           type="primary"
-          style={{ float: 'right' }}
+          style={{ float: "right" }}
           htmlType="submit"
-          loading={isPostAdding}>
+          loading={isPostAdding}
+        >
           Twit
         </Button>
       </div>
       <div>
         {imagePaths.map(imagePath => {
           return (
-            <div key={imagePath} style={{ display: 'inline-block' }}>
+            <div key={imagePath} style={{ display: "inline-block" }}>
               <img
                 src={`http://localhost:3000/${imagePath}`}
-                style={{ width: '200px' }}
+                style={{ width: "200px" }}
                 alt={imagePath}
               />
               <div>
